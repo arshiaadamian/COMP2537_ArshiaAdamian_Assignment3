@@ -1,30 +1,137 @@
-/* ─────────── Base styling (easy) ─────────── */
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #f8f9fa;
+/* ─────────── Base Styling ─────────── */
+:root {
+  --primary-color: #ffcc00; /* Pokémon yellow */
+  --secondary-color: #3b4cca; /* Pokémon blue */
+  --accent-color: #ff1a1a; /* Pokémon red */
+  --text-color: #333;
+  --light-bg: #f8f9fa;
+  --card-border-radius: 12px;
+  --card-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --card-shadow-hover: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-#game_grid {
-  border: 2px solid tomato;
-  margin: 20px auto;
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--light-bg);
+  color: var(--text-color);
+  min-height: 100vh;
   display: flex;
-  flex-wrap: wrap; /* easy uses flex */
-  width: 600px;
-  height: 400px; /* easy board size */
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ─────────── Header Styling ─────────── */
+.header {
+  text-align: center;
+  margin: 20px 0 30px;
+  width: 90%;
+  max-width: 800px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: var(--card-shadow);
+}
+
+.header h1 {
+  color: var(--accent-color);
+  margin: 0 0 15px;
+  font-size: 2.2rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.status {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  font-size: 1.1rem;
+}
+
+.status p {
+  margin: 5px 0;
+  background-color: rgba(255, 204, 0, 0.2);
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  box-shadow: var(--card-shadow);
+}
+
+button:hover {
+  background-color: var(--accent-color);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: var(--card-shadow-hover);
+}
+
+select {
+  padding: 8px 15px;
+  font-size: 1rem;
+  border-radius: 30px;
+  border: 2px solid var(--secondary-color);
+  background-color: white;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+/* ─────────── Game Grid Styling ─────────── */
+#game_grid {
+  border: 3px solid var(--secondary-color);
+  margin: 0 auto 40px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: var(--card-border-radius);
+  box-shadow: var(--card-shadow);
+  padding: 15px;
   box-sizing: border-box;
 }
 
+/* Base card styling */
 .card {
-  width: 33.333%; /* 3 columns for easy */
-  position: relative;
+  width: 100%;
+  height: 100%;
   perspective: 1000px;
-  transform-style: preserve-3d;
-  transition: transform 0.6s;
   cursor: pointer;
+  position: relative;
+  border-radius: var(--card-border-radius);
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
 }
 
-.card.flip {
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.card.flip .card-inner {
   transform: rotateY(180deg);
 }
 
@@ -34,70 +141,135 @@ body {
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: var(--card-border-radius);
 }
 
 .front_face {
+  background-color: white;
   transform: rotateY(180deg);
+  padding: 10px;
+  box-sizing: border-box;
 }
 
-img {
+.back_face {
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--accent-color)
+  );
+  transform: rotateY(0deg);
+}
+
+.front_face img,
+.back_face img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  display: block;
 }
 
-/* ─────────── Medium & Hard layout with more spacing ─────────── */
-#game_grid.medium,
+/* Add this to make sure cards maintain proper size */
+#game_grid .card {
+  position: relative;
+  aspect-ratio: 1/1;
+}
+
+/* ─────────── Difficulty Specific Styling ─────────── */
+
+/* Easy Mode (3x2 grid) */
+#game_grid.easy {
+  width: 600px;
+  height: 400px;
+}
+
+#game_grid.easy .card {
+  width: calc(33.333% - 16px);
+  height: calc(50% - 16px);
+}
+
+/* Medium Mode (4x3 grid) */
+#game_grid.medium {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  width: 700px;
+  min-height: 525px;
+  padding: 20px;
+}
+
+#game_grid.medium .card {
+  width: 100%;
+  aspect-ratio: 3/4;
+}
+
+/* Hard Mode (4x4 grid) */
 #game_grid.hard {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 20px; /* spacing between cards */
-  padding: 20px; /* inner padding */
-  width: 760px; /* ✅ enough width for 4 cards + 3 gaps */
-  height: auto;
-  box-sizing: border-box;
-  overflow: visible; /* prevent card cut-off */
+  gap: 12px;
+  width: 700px;
+  min-height: 700px;
+  padding: 20px;
 }
 
-#game_grid.medium .card,
 #game_grid.hard .card {
   width: 100%;
-  aspect-ratio: 100 / 140; /* keeps consistent card shape */
-  margin: 0;
+  aspect-ratio: 1/1;
 }
 
-/* ─────────── Header styling ─────────── */
-.header {
-  text-align: center;
-  margin-top: 20px;
+/* Responsive Design */
+@media (max-width: 768px) {
+  .header {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .status {
+    gap: 10px;
+  }
+
+  .status p {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+  }
+
+  #game_grid.easy {
+    width: 95%;
+    height: 70vw;
+  }
+
+  #game_grid.medium,
+  #game_grid.hard {
+    width: 95%;
+    grid-template-columns: repeat(2, 1fr);
+    min-height: auto;
+  }
+
+  button,
+  select {
+    padding: 8px 15px;
+    font-size: 0.9rem;
+  }
 }
 
-.status,
-.controls {
-  margin-top: 10px;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
+/* Animation for matched cards */
+@keyframes matched {
+  0% {
+    transform: rotateY(180deg) scale(1);
+  }
+  50% {
+    transform: rotateY(180deg) scale(1.1);
+  }
+  100% {
+    transform: rotateY(180deg) scale(1);
+  }
 }
 
-button {
-  padding: 8px 14px;
-  font-size: 1rem;
-  background-color: #ffcc00;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background-color: #ffaa00;
-}
-
-select {
-  padding: 5px;
-  font-size: 1rem;
-  border-radius: 4px;
-  border: 1px solid #ccc;
+.card.flip.matched {
+  animation: matched 0.5s ease;
+  pointer-events: none;
 }

@@ -20,6 +20,11 @@ $(document).ready(async () => {
   $("#powerUpBtn").on("click", () => {
     activatePowerUp();
   });
+
+  $("#resetBtn").on("click", async () => {
+    const difficulty = $("#difficulty").val();
+    await startGame(difficulty);
+  });
 });
 
 async function startGame(difficulty) {
@@ -55,11 +60,17 @@ async function startGame(difficulty) {
 
   cards.forEach((img) => {
     const card = $(`
-      <div class="card">
-        <img class="front_face" src="${img}" />
-        <img class="back_face" src="back.webp" />
+    <div class="card">
+      <div class="card-inner">
+        <div class="front_face">
+          <img src="${img}" alt="Pokémon" />
+        </div>
+        <div class="back_face">
+          <img src="back.webp" alt="Pokéball" />
+        </div>
       </div>
-    `);
+    </div>
+  `);
 
     card.on("click", () => handleCardClick(card, img));
     gameContainer.append(card);
@@ -168,5 +179,5 @@ function activatePowerUp() {
       $(this).removeClass("flip");
     });
     lockBoard = false;
-  }, 2000); // show for 2 seconds
+  }, 1500); // show for 2 seconds
 }
