@@ -59,13 +59,13 @@ async function startGame(difficulty) {
 
   if (difficulty === "medium") {
     totalPairs = 6;
-    maxTimeLimit = 100;
+    maxTimeLimit = 80;
   } else if (difficulty === "hard") {
     totalPairs = 8;
-    maxTimeLimit = 120;
+    maxTimeLimit = 110;
   } else {
     totalPairs = 3;
-    maxTimeLimit = 75;
+    maxTimeLimit = 50;
   }
 
   $("#timeLimit").text(maxTimeLimit);
