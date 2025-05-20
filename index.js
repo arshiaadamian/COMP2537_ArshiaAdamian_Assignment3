@@ -10,6 +10,12 @@ let elapsedTime = 0;
 let maxTimeLimit = 75;
 
 $(document).ready(async () => {
+  const savedTheme = localStorage.getItem("pokemonMemoryTheme");
+  if (savedTheme === "dark") {
+    $(".header, #game_grid").addClass("dark");
+    $("#themeToggle").text("☀️ Light Mode");
+  }
+
   await startGame("easy");
 
   $("#startBtn").on("click", async () => {
@@ -24,6 +30,18 @@ $(document).ready(async () => {
   $("#resetBtn").on("click", async () => {
     const difficulty = $("#difficulty").val();
     await startGame(difficulty);
+  });
+
+  $("#themeToggle").on("click", function () {
+    // Toggle dark class on both header and game grid
+    $(".header, #game_grid").toggleClass("dark");
+
+    // Update button text based on current theme
+    const isDark = $(".header").hasClass("dark");
+    $("#themeToggle").text(isDark ? "☀️ Light Mode" : "🌙 Dark Mode");
+
+    // Store preference in localStorage
+    localStorage.setItem("pokemonMemoryTheme", isDark ? "dark" : "light");
   });
 });
 
@@ -163,7 +181,6 @@ async function getRandomPokemonImages(count) {
   return images;
 }
 
-// 🟦 POWER-UP BUTTON FUNCTION
 function activatePowerUp() {
   const cards = $(".card:not(.flip)");
   if (cards.length === 0) return;

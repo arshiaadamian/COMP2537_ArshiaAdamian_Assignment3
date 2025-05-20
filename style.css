@@ -1,4 +1,3 @@
-/* ─────────── Base Styling ─────────── */
 :root {
   --primary-color: #ffcc00; /* Pokémon yellow */
   --secondary-color: #3b4cca; /* Pokémon blue */
@@ -6,8 +5,16 @@
   --text-color: #333;
   --light-bg: #f8f9fa;
   --card-border-radius: 12px;
-  --card-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  --card-shadow-hover: 0 6px 12px rgba(0, 0, 0, 0.15);
+
+  /* Game theme variables (light mode defaults) */
+  --game-header-bg: white;
+  --game-text-color: #333;
+  --game-border-color: #3b4cca;
+  --game-grid-bg: white;
+  --game-card-bg: white;
+  --game-status-bg: rgba(255, 204, 0, 0.2);
+  --game-card-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --game-card-shadow-hover: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 body {
@@ -28,9 +35,10 @@ body {
   width: 90%;
   max-width: 800px;
   padding: 20px;
-  background-color: white;
+  background-color: var(--game-header-bg);
+  color: var(--game-text-color);
   border-radius: 16px;
-  box-shadow: var(--card-shadow);
+  box-shadow: var(--game-card-shadow);
 }
 
 .header h1 {
@@ -51,7 +59,8 @@ body {
 
 .status p {
   margin: 5px 0;
-  background-color: rgba(255, 204, 0, 0.2);
+  background-color: var(--game-status-bg);
+  color: var(--game-text-color);
   padding: 8px 15px;
   border-radius: 20px;
   font-weight: 500;
@@ -75,14 +84,14 @@ button {
   cursor: pointer;
   transition: all 0.3s ease;
   font-weight: 600;
-  box-shadow: var(--card-shadow);
+  box-shadow: var(--game-card-shadow);
 }
 
 button:hover {
   background-color: var(--accent-color);
   color: white;
   transform: translateY(-2px);
-  box-shadow: var(--card-shadow-hover);
+  box-shadow: var(--game-card-shadow-hover);
 }
 
 select {
@@ -97,15 +106,15 @@ select {
 
 /* ─────────── Game Grid Styling ─────────── */
 #game_grid {
-  border: 3px solid var(--secondary-color);
+  border: 3px solid var(--game-border-color);
   margin: 0 auto 40px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  background-color: white;
+  background-color: var(--game-grid-bg);
   border-radius: var(--card-border-radius);
-  box-shadow: var(--card-shadow);
+  box-shadow: var(--game-card-shadow);
   padding: 15px;
   box-sizing: border-box;
 }
@@ -119,7 +128,11 @@ select {
   position: relative;
   border-radius: var(--card-border-radius);
   overflow: hidden;
-  box-shadow: var(--card-shadow);
+  box-shadow: var(--game-card-shadow);
+}
+
+.card:hover {
+  box-shadow: var(--game-card-shadow-hover);
 }
 
 .card-inner {
@@ -149,7 +162,7 @@ select {
 }
 
 .front_face {
-  background-color: white;
+  background-color: var(--game-card-bg);
   transform: rotateY(180deg);
   padding: 10px;
   box-sizing: border-box;
@@ -172,7 +185,7 @@ select {
   display: block;
 }
 
-/* Add this to make sure cards maintain proper size */
+/* Card sizing */
 #game_grid .card {
   position: relative;
   aspect-ratio: 1/1;
@@ -272,4 +285,55 @@ select {
 .card.flip.matched {
   animation: matched 0.5s ease;
   pointer-events: none;
+}
+
+/* Dark Theme Overrides */
+.game-dark-theme {
+  --game-header-bg: #16213e;
+  --game-text-color: #f1f1f1;
+  --game-border-color: #ffcc00;
+  --game-grid-bg: #1a1a2e;
+  --game-card-bg: #0f3460;
+  --game-status-bg: rgba(255, 204, 0, 0.3);
+  --game-card-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  --game-card-shadow-hover: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.dark {
+  --game-header-bg: #16213e;
+  --game-text-color: #f1f1f1;
+  --game-border-color: #ffcc00;
+  --game-grid-bg: #1a1a2e;
+  --game-card-bg: #0f3460;
+  --game-status-bg: rgba(255, 204, 0, 0.3);
+  --game-card-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  --game-card-shadow-hover: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+body .header.dark,
+body #game_grid.dark {
+  background-color: var(--game-header-bg);
+  color: var(--game-text-color);
+}
+
+#game_grid.dark {
+  border-color: var(--game-border-color);
+  background-color: var(--game-grid-bg);
+}
+
+.dark .status p {
+  background-color: var(--game-status-bg);
+  color: var(--game-text-color);
+}
+
+.dark .front_face {
+  background-color: var(--game-card-bg);
+}
+
+.dark .card {
+  box-shadow: var(--game-card-shadow);
+}
+
+.dark .card:hover {
+  box-shadow: var(--game-card-shadow-hover);
 }
